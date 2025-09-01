@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Config, appConfig, searchOptions} from '../helpers/utils.js'
+import { appConfig} from '../helpers/utils.js'
 import * as utils from '../helpers/utils.js'
 import * as unsplash from '../helpers/unsplash-api.js'
 import { Image } from '../components/Image.js'
@@ -56,7 +56,7 @@ function ImageLoader() {
         });
 
       })
-      .catch((e) => {
+      .catch(() => {
         console.log("error en change Image")
       })
   }

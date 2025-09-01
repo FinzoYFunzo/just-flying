@@ -1,4 +1,4 @@
-import { Config, appConfig, searchOptions, ApiArray2String, ApiString2Array} from '../helpers/utils.js'
+import { appConfig, searchOptions, ApiArray2String, ApiString2Array} from '../helpers/utils.js'
 import './Controller.css'
 
 function Controller({callback}: {callback: any}){
