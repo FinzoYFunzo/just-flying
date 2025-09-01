@@ -1,0 +1,35 @@
+#controller{
+    position: relative;
+    background-color: #00000090;
+    z-index: 4;
+    padding: 1em;
+    border-radius: 1.5em;
+    opacity: 0;
+    transition: opacity 1s;
+    position: absolute;
+    top: 2em;
+    right: 2em;
+}
+
+#controller:hover{
+    opacity: 1;
+}
+
+fieldset{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    border: 1px solid #70707020;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+#controller span{
+    text-align: center;
+}
+
+
+.field{
+    display: flex;
+    flex-direction: column;
+}

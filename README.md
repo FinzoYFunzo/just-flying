@@ -1,15 +1,4 @@
 # Just Flying
-Agarra un cafe y relajate
+Es una aplciacion destinada a mostrar imagenes randomizadas a partir de una query
 
-Visualizador de imagenes automatizado
-
-## Run
-Crea tu API-KEY en [unsplash](https://unsplash.com/)
-y reemplazala en el archivo index.js
-(proxima modularizacion)
-
-puedes directamente correr la aplicacion sin hacer build con
-```bash
-npm start
-```
-y se abrira tu pagina en [http://localhost:3000](http://localhost:3000)
+Un proyecto que nace a partir de la necesidad de desconcentrar la vista mientras se disfurta de alguna pieza musical. Sobre todo en el contexto actual donde **solo** escuchar musica pareciera algo imposible.
