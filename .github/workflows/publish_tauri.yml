@@ -1,0 +1,104 @@
+name: Auto-Increment Version on PR Merge
+
+on:
+  pull_request:
+    types: [closed] # Solo cuando se cierra el PR
+    branches:
+      - main
+
+jobs:
+  publish-tauri:
+    if: github.event.pull_request.merged == true
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      # Checkout del repo (usa GITHUB_TOKEN automáticamente)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      # Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # Configura Rust
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      # Instalar dependencias de Ubuntu
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      
+      # Dependencias del proyecto
+      - name: install frontend dependencies
+        run: npm install 
+      
+        
+      # Configurar Git
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      # Incrementar versión según rama base
+      - name: Increment version
+        run: |
+          BRANCH="${{ github.event.pull_request.base.ref }}"
+          echo "Merged into branch: $BRANCH"
+
+          # Incrementar versión según rama
+          if [[ "$BRANCH" == "main" ]]; then
+            echo "Bumping minor version"
+            npm version minor -m "Bump version to %s"
+          fi
+
+          # Subir commit y tags
+          git push
+          git push --tags
+
+      # # Create Release
+      # - name: Create GitHub Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     files: |
+      #       src-tauri/target/release/just-flying
+      #       src-tauri/target/release/bundle/appimage/just-flying_${{ github.run_number }}_amd64.AppImage
+      #       src-tauri/target/release/bundle/deb/just-flying_${{ github.run_number }}_amd64.deb
+      #       src-tauri/target/release/bundle/rpm/just-flying_${{ github.run_number }}_x86_64.rpm
+      #       README.md
+
+      # Build
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
