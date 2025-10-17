@@ -55,7 +55,7 @@ jobs:
       
       # Dependencias del proyecto
       - name: install frontend dependencies
-        run: npm install 
+        run: npm ci
       
         
       # Configurar Git
