@@ -1,4 +1,19 @@
-# Just Flying
-Es una aplciacion destinada a mostrar imagenes randomizadas a partir de una query
+<p align="center">
+  <img src="./public/just-flying-app.png" alt="Just Flying App" width="80%">
+</p>
 
-Un proyecto que nace a partir de la necesidad de desconcentrar la vista mientras se disfurta de alguna pieza musical. Sobre todo en el contexto actual donde **solo** escuchar musica pareciera algo imposible.
+# Just Flying
+
+Aplicación creada con Vite + Tauri, usando React, que permite visualizar imágenes consumiendo la API de Unsplash.
+
+El proyecto surge de la necesidad de desconcentrar la vista mientras se disfruta de alguna pieza musical, especialmente en un contexto donde **solo escuchar música parece insuficiente**.
+
+## Install
+
+Puedes compilar e instalar la aplicación localmente con:
+
+```sh
+make install
+```
+
+O, si lo prefieres, instalar uno de los bundles disponibles en las releases de GitHub.
