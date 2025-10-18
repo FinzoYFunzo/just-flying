@@ -7,7 +7,29 @@ on:
       - main
 
 jobs:
+  bump-version:
+      runs-on: ubuntu-22.04
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+            persist-credentials: true
+        - name: Setup Node
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+        - name: Configure Git
+          run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+        - name: Bump version
+          run: |
+            npm version minor -m "Bump version to %s"
+            git push
+            git push --tags
+
   publish-tauri:
+    needs: bump-version
     if: github.event.pull_request.merged == true
     permissions:
       contents: write
@@ -56,29 +78,6 @@ jobs:
       # Dependencias del proyecto
       - name: install frontend dependencies
         run: npm ci
-      
-        
-      # Configurar Git
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      
-      # Incrementar versión según rama base
-      - name: Increment version
-        run: |
-          BRANCH="${{ github.event.pull_request.base.ref }}"
-          echo "Merged into branch: $BRANCH"
-
-          # Incrementar versión según rama
-          if [[ "$BRANCH" == "main" ]]; then
-            echo "Bumping minor version"
-            npm version minor -m "Bump version to %s"
-          fi
-
-          # Subir commit y tags
-          git push
-          git push --tags
 
       # # Create Release
       # - name: Create GitHub Release
