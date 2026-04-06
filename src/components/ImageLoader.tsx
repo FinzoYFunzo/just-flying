@@ -16,6 +16,7 @@ function ImageLoader() {
   const [imageSrc, setImageSrc] = useState<Array<string>>([]);
   const [activeImage, setActiveImage] = useState(0);
   const [touchInterval, setTouchInterval] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   function switcher(): void {
     setActiveImage(prev => 1 - prev);
@@ -25,12 +26,12 @@ function ImageLoader() {
   let unsplashSingleApi: Record<string, any>;
 
 
-  // Cambia la imagen que NO se esta mostrando
-  function changeImage(imageId: number) {
+  // Cambia la imagen con id imageId
+  function changeImage(imageId: number): Promise<void> {
     const options: Record<string, string> = utils.parseOptions() || {}; // leemos localStorage
     ({ unsplashSingleApi, apiIndex } = unsplash.getUnsplash(unsplashApis, apiIndex)); // obtenemos una api de la lista
 
-    unsplash.fetchImage(unsplashSingleApi, options)
+    return unsplash.fetchImage(unsplashSingleApi, options)
       .then(async (res: any) => {
         const url: string = res.response[0].urls.full
 
@@ -70,7 +71,8 @@ function ImageLoader() {
 
     return () => {
       clearInterval(interval)
-      changeImage(1 - activeImage)
+      setLoading(true)
+      changeImage(1 - activeImage).then(() => { setLoading(false) })
     }
   }, [touchInterval])
 
@@ -101,7 +103,7 @@ function ImageLoader() {
         id={1}
         src={imageSrc[1]}
       />
-      <Controller callback={touch} />
+      <Controller callback={touch} loading={loading} />
       <div className='preload-screen' style={{ display: (imageSrc[0] != undefined && imageSrc[1] != undefined) ? "none" : "inherit" }}>
         <p>Loading...</p>
         <p>Make sure to introduce your unsplash API keys</p>

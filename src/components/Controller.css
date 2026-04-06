@@ -33,3 +33,12 @@ fieldset{
     display: flex;
     flex-direction: column;
 }
+
+#load-btn {
+    height: 3em;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
