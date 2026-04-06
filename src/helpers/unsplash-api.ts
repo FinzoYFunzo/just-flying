@@ -1,35 +1,37 @@
 import { createApi } from "unsplash-js"
 
-export function fetchImage (unsplash: Record<string, any>, options: Record<string, string>): Promise<Object> {
+export function fetchImage(unsplash: Record<string, any>, options: Record<string, string>): Promise<Object> {
   return unsplash.photos.getRandom(options)
-  .catch((e: Error) =>{
-    console.log(e)
-  })
+    .catch((e: Error) => {
+      console.log(e)
+    })
 }
 
 // Retorna todas las apis luego de ser procesadas por createApi
-export function unsplashApiParser (apiKeys: Array<string> | []): Array<Record<string,any>> {
+export function unsplashApiParser(apiKeys: Array<string> | []): Array<Record<string, any>> {
+  console.log(apiKeys)
   return apiKeys.map((key) => {
     return createApi({ accessKey: key });
   });
 }
 
-export function getUnsplash (UAs: Array<Record<string, any>>, apiIndex: number) {
+export function getUnsplash(UAs: Array<Record<string, any>>, apiIndex: number) {
+  console.log(apiIndex)
   return {
     unsplashSingleApi: UAs[apiIndex],
     apiIndex: (apiIndex == (UAs.length - 1)) ? 0 : apiIndex + 1
   }
 }
 
-export function unsplashFetchRandom (
+export function unsplashFetchRandom(
   unsplash: Record<string, any>,
   options: Record<string, string>,
 ): Promise<string> {
   return fetchImage(unsplash, options)
-  .then((res: any) =>{
-    return res.response[0].urls.full
-  })
-  .catch((e) => {
-    throw e;
-  })
+    .then((res: any) => {
+      return res.response[0].urls.full
+    })
+    .catch((e) => {
+      throw e;
+    })
 }
