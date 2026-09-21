@@ -1,4 +1,4 @@
-#controller{
+.floating{
     position: relative;
     background-color: #00000090;
     z-index: 4;
@@ -11,7 +11,11 @@
     right: 2em;
 }
 
-#controller:hover{
+.floating.always-visible {
+    opacity: 1;
+}
+
+.floating:hover{
     opacity: 1;
 }
 
@@ -24,7 +28,7 @@ fieldset{
     padding: 1em;
 }
 
-#controller span{
+.floating span{
     text-align: center;
 }
 
@@ -41,4 +45,13 @@ fieldset{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.icon {
+  position: absolute;
+  size: inherit;
+  width: 1em;
+  left: 84%;
+  filter: brightness(90%);
+  top: 5%;
 }
