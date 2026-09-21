@@ -46,6 +46,7 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -55,4 +56,18 @@ button:focus-visible {
 .muted{
   font-size: small;
   opacity: 0.5;
+}
+
+.spinning {
+  animation: spinning 15s linear infinite;
+}
+
+@keyframes spinning {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
