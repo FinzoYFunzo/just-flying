@@ -3,11 +3,11 @@ name: Auto-Increment Version on PR Merge
 on:
   push:
     branches:
-      - dev
+      - main
   pull_request:
     types: [closed]
     branches:
-      - dev
+      - main
 
 jobs:
   bump-version:
