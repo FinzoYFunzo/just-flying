@@ -1,6 +1,11 @@
 import { createApi } from "unsplash-js"
 
 export function fetchImage(unsplash: Record<string, any>, options: Record<string, string>): Promise<Object> {
+  if ("query" in options) {
+    const querys = options["query"].split(",")
+    options["query"] = querys[Math.floor(Math.random() * querys.length)];
+  }
+  console.log(options)
   return unsplash.photos.getRandom(options)
     .catch((e: Error) => {
       console.log(e)
